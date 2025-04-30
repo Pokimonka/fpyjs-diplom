@@ -3,42 +3,108 @@
  * Используется для взаимодействием блоком изображений
  * */
 class ImageViewer {
-  constructor( element ) {
+    constructor( element ) {
+        this.element = element;
+        this.previewImage = document.querySelector('.fluid');
+        this.imageList = document.querySelector(".images-list .grid .row");
+        this.registerEvents();
+    }
 
-  }
+    /**
+     * Добавляет следующие обработчики событий:
+     * 1. Клик по изображению меняет класс активности у изображения
+     * 2. Двойной клик по изображению отображает изображаения в блоке предпросмотра
+     * 3. Клик по кнопке выделения всех изображений проверяет у всех ли изображений есть класс активности?
+     * Добавляет или удаляет класс активности у всех изображений
+     * 4. Клик по кнопке "Посмотреть загруженные файлы" открывает всплывающее окно просмотра загруженных файлов
+     * 5. Клик по кнопке "Отправить на диск" открывает всплывающее окно для загрузки файлов
+     */
+    registerEvents(){
+        this.imageList.addEventListener('dblclick', (ev)=> {
+            if (ev.target.tagName.toLowerCase() === "img") {
+                this.previewImage.src = ev.target.src;
+            }
+        });
 
-  /**
-   * Добавляет следующие обработчики событий:
-   * 1. Клик по изображению меняет класс активности у изображения
-   * 2. Двойной клик по изображению отображает изображаения в блоке предпросмотра
-   * 3. Клик по кнопке выделения всех изображений проверяет у всех ли изображений есть класс активности?
-   * Добавляет или удаляет класс активности у всех изображений
-   * 4. Клик по кнопке "Посмотреть загруженные файлы" открывает всплывающее окно просмотра загруженных файлов
-   * 5. Клик по кнопке "Отправить на диск" открывает всплывающее окно для загрузки файлов
-   */
-  registerEvents(){
+        this.imageList.addEventListener("click", (ev) => {
+            if (ev.target.tagName.toLowerCase() === "img") {
+              ev.target.classList.toggle("selected");
+            }
+            this.checkButtonText();
+        });
 
-  }
+        let selectBtn = this.element.querySelector('.select-all');
+        selectBtn.addEventListener('click', () => {
+            let images = Array.from(this.imageList.querySelectorAll('img'));
 
-  /**
-   * Очищает отрисованные изображения
-   */
-  clear() {
+            if (images.some(child => {return child.classList.contains('selected')})) {
+                images.forEach((img) => {
+                    img.classList.remove('selected');
+                });
+            } else {
+                images.forEach((img) => {
+                    img.classList.add('selected');
+                });
+            }
 
-  }
+            this.checkButtonText();
+        });
 
-  /**
-   * Отрисовывает изображения.
-  */
-  drawImages(images) {
+        let showUploadedFiles = this.element.querySelector('.show-uploaded-files');
+        App.getModal('filePreviewer');
+        // TODO:  image_viewer.md  Клик по кнопке "Посмотреть загруженные файлы"
 
-  }
+        let sendBtn = this.element.querySelector('.send');
+        // TODO:  image_viewer.md  Клик по кнопке "Отправить на диск"
+        App.getModal('fileUploader');
+    }
 
-  /**
-   * Контроллирует кнопки выделения всех изображений и отправки изображений на диск
-   */
-  checkButtonText(){
+    /**
+     * Очищает отрисованные изображения
+     */
+    clear() {
+        this.imageList.innerHTML='';
+    }
 
-  }
+    /**
+     * Отрисовывает изображения.
+     */
+    drawImages(images) {
+        let selectBtn = this.element.querySelector('.select-all');
+        
+        if (images.length > 0) {
+            selectBtn.classList.remove("disabled");
+        } else {
+            console.log(images.length);
+            selectBtn.classList.add("disabled");
+        }
+
+        for (let img of images) {
+            let image = `<div class='four wide column ui medium image-wrapper'><img src='${img['url']}'/></div>`;
+
+            this.imageList.insertAdjacentHTML('beforeend', image);
+        }
+
+    }
+
+    /**
+     * Контроллирует кнопки выделения всех изображений и отправки изображений на диск
+     */
+    checkButtonText() {
+        let images = Array.from(this.imageList.querySelectorAll('img'));
+        let selectBtn = this.element.querySelector('.select-all');
+        let sendBtn = this.element.querySelector('.send');
+
+        if (images.some(child => {return child.classList.contains('selected')})) {
+            selectBtn.textContent = 'Снять выделение';
+            sendBtn.classList.remove('disabled');
+        } else {
+            selectBtn.textContent = 'Выбрать всё';
+            if (!sendBtn.classList.contains('disabled')) {
+                sendBtn.classList.add('disabled');
+            }
+        }
+
+    }
 
 }
