@@ -14,7 +14,8 @@ class VK {
         'access_token': this.ACCESS_TOKEN, 
         'v': this.version,
         'album_id': 'profile',
-        'user_id ': ''
+        'user_id ': '403590168',
+        "э": "550130008"
     };
 
     static lastCallback;
@@ -22,13 +23,13 @@ class VK {
     /* *
      * Получает изображения
      * */
-    static get(id = '', callback){
+    static get(id, callback){
         this.lastCallback = callback;
         let script = document.createElement('SCRIPT');
         script.src = 
         "https://api.vk.com/method/photos.get?" + 
         `access_token=${this.ACCESS_TOKEN}&v=5.199&`+ 
-        `album_id=profile&user_ids=${id}&callback=callback`;
+        `album_id=profile&owner_id=${id}&callback=callback`;
         script.id ='photos_get';
 
         document.body.appendChild(script);

@@ -13,13 +13,15 @@ class BaseModal {
      * Открывает всплывающее окно
      */
     open() {
-
+        console.log(this.element);
+        console.log($(this.element));
+        $(this.element).modal('show');
     }
 
     /**
      * Закрывает всплывающее окно
      */
     close() {
-
+        $(this.element).modal('hide');
     }
 }

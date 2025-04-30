@@ -50,13 +50,23 @@ class ImageViewer {
             this.checkButtonText();
         });
 
-        let showUploadedFiles = this.element.querySelector('.show-uploaded-files');
-        App.getModal('filePreviewer');
-        // TODO:  image_viewer.md  Клик по кнопке "Посмотреть загруженные файлы"
+        let showUploadedFilesBtn = this.element.querySelector('.show-uploaded-files');
+
+        showUploadedFilesBtn.addEventListener('click' , () => {
+            const previewModal = App.getModal('filePreviewer');
+            let uploadedPreviewer = document.querySelector(".uploaded-previewer-modal .content");
+            uploadedPreviewer.innerHTML = '<i class="asterisk loading icon massive"></i>';
+            previewModal.open();
+            Yandex.getUploadedFiles((el)=>{previewModal.showImages(el)});
+        })
 
         let sendBtn = this.element.querySelector('.send');
-        // TODO:  image_viewer.md  Клик по кнопке "Отправить на диск"
-        App.getModal('fileUploader');
+        sendBtn.addEventListener('click' , () => {
+            const uploaderModal = App.getModal('fileUploader');
+            let images = Array.from(this.imageList.querySelectorAll(".selected")).map(el => el.src);
+            uploaderModal.open();
+            uploaderModal.showImages(images);
+        })
     }
 
     /**
