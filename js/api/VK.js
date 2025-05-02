@@ -9,14 +9,7 @@ class VK {
     static ACCESS_TOKEN = '';
     static version = '5.199';
 
-    static params = 
-    {
-        'access_token': this.ACCESS_TOKEN, 
-        'v': this.version,
-        'album_id': 'profile',
-        'user_id ': '403590168',
-        "э": "550130008"
-    };
+    
 
     static lastCallback;
 
@@ -55,7 +48,6 @@ class VK {
         } catch(e) {
             alert(`Ошибка ${e.name} : ${e.message}`);
         }
-        // console.log(result);
         for (const item of result.response.items) {
             let siz = {};
             for (const [id, size] of item.sizes.entries()) {

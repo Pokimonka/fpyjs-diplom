@@ -12,7 +12,7 @@ const createRequest = (options = {}) => {
             {
                 method: options.method,
                 headers: {
-                    Authorization: options.headers.Auth,
+                    Authorization: options.headers.Authorization,
                 }
             },
         );

@@ -23,13 +23,13 @@ class FileUploaderModal extends BaseModal {
      */
     registerEvents(){
         this.closeBtn.addEventListener('click', () => {this.close()});
-        console.log(this.closeBtn);
-        this.uploaderModelWindow.querySelector('.x').addEventListener('click', () => {this.close()});
 
-        this.sendAllBtn.addEventListener('click', this.sendAllImages);
+        this.uploaderModelWindow.querySelector(".header .x").addEventListener('click', () => {this.close()});
+
+        this.sendAllBtn.addEventListener('click', this.sendAllImages.bind(this));
 
         this.content.addEventListener('click', (ev) => {
-            if (ev.target === this.content.querySelector('.input')) {
+            if (ev.target === this.content.querySelector('input')) {
                 this.content.classList.remove("error");
             }
             if (ev.target.classList.contains("button") || ev.target.classList.contains("upload")
@@ -83,11 +83,13 @@ class FileUploaderModal extends BaseModal {
         if (!inp.value.trim()) {
             inp.parentNode.classList.add('error');
         } else {
-            const url = imageContainer.querySelector('img').src
-            inp.parentNode.classList.add('disabled');
+            const url = imageContainer.querySelector('img').src;
+            const path = inp.value.trim();
+            imageContainer.querySelector(".input").classList.add("disabled");
+
             Yandex.uploadFile(path, url, () => {
                 imageContainer.remove();
-                if (this.contenContainer.children.length < 1) {
+                if (this.content.children.length < 1) {
                     this.close()
                 }
             })

@@ -37,7 +37,6 @@ class SearchBlock {
 
 function callback(result) {
     let images = VK.processData(result);
-    console.log(images);
     if (images.length > 0) {
         App.imageViewer.drawImages(images);
     }
